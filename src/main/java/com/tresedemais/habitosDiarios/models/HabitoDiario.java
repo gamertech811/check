@@ -1,25 +1,20 @@
 package com.tresedemais.habitosDiarios.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class HabitoDiario {
-    Integer id;
-    Integer id_h;
+    private Integer id;
+    private Integer id_h;
+    private Integer status;
+    private LocalDate data;
 
-    public Date getData() {
-        return data;
+
+    public Integer getId() {
+        return id;
     }
 
-    public void setData(Date data) {
-        this.data = data;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getId_h() {
@@ -30,14 +25,19 @@ public class HabitoDiario {
         this.id_h = id_h;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
-    Integer status;
-    Date data;
+    public LocalDate getData() {
+        return data;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
 }
