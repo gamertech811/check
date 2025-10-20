@@ -7,5 +7,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface HabitoDiarioRepository extends JpaRepository<HabitoDiario, Integer> {
-    public List<HabitoDiario> findByDate(LocalDate data);
+    List<HabitoDiario> findAllByDate(LocalDate data);
 }
