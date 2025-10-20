@@ -1,9 +1,16 @@
 package com.tresedemais.habitosDiarios.models;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "habito_diario")
 public class HabitoDiario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private Integer id_h;
     private Integer status;
     private LocalDate data;

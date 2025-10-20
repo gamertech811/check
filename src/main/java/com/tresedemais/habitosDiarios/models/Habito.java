@@ -1,7 +1,15 @@
 package com.tresedemais.habitosDiarios.models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "habito")
 public class Habito {
-    Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String nome;
 
     public String getNome() {
         return nome;
@@ -19,5 +27,4 @@ public class Habito {
         this.id = id;
     }
 
-    String nome;
 }
