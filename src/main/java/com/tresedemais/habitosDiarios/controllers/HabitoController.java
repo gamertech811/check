@@ -5,6 +5,7 @@ import com.tresedemais.habitosDiarios.models.HabitoDiario;
 import com.tresedemais.habitosDiarios.services.ServiceHabito;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,37 +13,31 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
-@RequestMapping({"/habito"})
-
-
-
-
-
-
+@RequestMapping("/habito")
 public class HabitoController {
     @Autowired
     private ServiceHabito habServ;
 
     @GetMapping
-    public List<Habito> listarHabitos() {
-        return habServ.getAllHabitos();
+    public ResponseEntity<List<Habito>> listarHabitos() {
+        return ResponseEntity.ok(habServ.getAllHabitos());
     }
 
     @GetMapping("/{id}")
-    public Habito buscarHabito(@PathVariable int id) throws Exception {
+    public ResponseEntity<Habito> buscarHabito(@PathVariable int id) throws Exception {
         Habito habito = habServ.findHabitoById(id);
         if (habito == null) throw new Exception("Habito não encontrado");
-        return habito;
+        return ResponseEntity.ok(habito);
     }
 
     @PostMapping
-    public Habito criarHabito(@RequestBody Habito habito) {
-        return habServ.criarHabito(habito);
+    public ResponseEntity<Habito> criarHabito(@RequestBody Habito habito) {
+        return ResponseEntity.ok(habServ.criarHabito(habito));
     }
 
     @GetMapping("/data/{data}")
-    public List<HabitoDiario> findAllByDate(@PathVariable LocalDate data) {
-        return habServ.findAllByData(data);
+    public ResponseEntity<List<HabitoDiario>> findAllByDate(@PathVariable LocalDate data) {
+        return ResponseEntity.ok(habServ.findAllByData(data));
     }
 }
 

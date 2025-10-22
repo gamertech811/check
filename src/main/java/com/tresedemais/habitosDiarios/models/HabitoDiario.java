@@ -11,6 +11,7 @@ public class HabitoDiario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "id_habito")
     private Integer id_h;
     private Integer status;
     private LocalDate data;
