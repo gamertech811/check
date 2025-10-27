@@ -1,4 +1,4 @@
-package com.tresedemais.habitosDiarios.models;
+package com.tresedemais.habitosDiarios.models.db;
 
 import jakarta.persistence.*;
 
@@ -16,6 +16,13 @@ public class HabitoDiario {
     private Integer status;
     private LocalDate data;
 
+    public HabitoDiario(){}
+
+    public HabitoDiario(Integer idHabito, LocalDate data){
+        this.id_h = idHabito;
+        this.status = 2;
+        this.data = data;
+    }
 
     public Integer getId() {
         return id;

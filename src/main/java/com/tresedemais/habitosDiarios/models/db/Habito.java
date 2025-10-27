@@ -1,4 +1,4 @@
-package com.tresedemais.habitosDiarios.models;
+package com.tresedemais.habitosDiarios.models.db;
 
 import jakarta.persistence.*;
 

@@ -1,6 +1,6 @@
 package com.tresedemais.habitosDiarios.repositories;
 
-import com.tresedemais.habitosDiarios.models.HabitoDiario;
+import com.tresedemais.habitosDiarios.models.db.HabitoDiario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

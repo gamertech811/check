@@ -1,7 +1,7 @@
 package com.tresedemais.habitosDiarios.controllers;
 
-import com.tresedemais.habitosDiarios.models.Habito;
-import com.tresedemais.habitosDiarios.models.HabitoDiario;
+import com.tresedemais.habitosDiarios.models.response.HabitoDiarioResponse;
+import com.tresedemais.habitosDiarios.models.db.Habito;
 import com.tresedemais.habitosDiarios.services.ServiceHabito;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,12 +31,13 @@ public class HabitoController {
     }
 
     @PostMapping
-    public ResponseEntity<Habito> criarHabito(@RequestBody Habito habito) {
-        return ResponseEntity.ok(habServ.criarHabito(habito));
+    public ResponseEntity<String> criarHabito(@RequestBody Habito habito) {
+        habServ.criarHabito(habito);
+        return ResponseEntity.ok("Hábito criado com sucesso!");
     }
 
     @GetMapping("/data/{data}")
-    public ResponseEntity<List<HabitoDiario>> findAllByDate(@PathVariable LocalDate data) {
+    public ResponseEntity<List<HabitoDiarioResponse>> findAllByDate(@PathVariable LocalDate data) {
         return ResponseEntity.ok(habServ.findAllByData(data));
     }
 }

@@ -1,7 +1,8 @@
 package com.tresedemais.habitosDiarios.services;
 
-import com.tresedemais.habitosDiarios.models.Habito;
-import com.tresedemais.habitosDiarios.models.HabitoDiario;
+import com.tresedemais.habitosDiarios.models.response.HabitoDiarioResponse;
+import com.tresedemais.habitosDiarios.models.db.Habito;
+import com.tresedemais.habitosDiarios.models.db.HabitoDiario;
 import com.tresedemais.habitosDiarios.repositories.HabitoDiarioRepository;
 import com.tresedemais.habitosDiarios.repositories.HabitoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -19,44 +19,48 @@ import java.util.stream.Collectors;
 public class ServiceHabito {
 
     @Autowired
-    private HabitoRepository habitoRepo;
+    private HabitoRepository habitoRepository;
 
     @Autowired
-    private HabitoDiarioRepository habdiaRepo;
+    private HabitoDiarioRepository habitoDiarioRepository;
 
     public Habito criarHabito(Habito habito) {
-        return habitoRepo.save(habito);
+        return habitoRepository.save(habito);
     }
 
     public List<Habito> getAllHabitos() {
-        return habitoRepo.findAll();
+        return habitoRepository.findAll();
     }
 
     public void excluirHabito(Integer id) {
-        habitoRepo.deleteById(id);
+        habitoRepository.deleteById(id);
     }
 
     public Habito findHabitoById(int id) {
-        return habitoRepo.findById(id).orElse(null);
+        return habitoRepository.findById(id).orElse(null);
     }
 
-    public List<HabitoDiario> findAllByData(LocalDate data) {
-        List<Habito> habitos = habitoRepo.findAll();
-        Map<Integer, HabitoDiario> mapHabito = habdiaRepo.findAllByData(data).stream()
+    public List<HabitoDiarioResponse> findAllByData(LocalDate data) {
+        List<Habito> habitos = habitoRepository.findAll();
+        Map<Integer, HabitoDiario> mapHabito = habitoDiarioRepository.findAllByData(data).stream()
                 .collect(Collectors.toMap(HabitoDiario::getId_h, Function.identity()));
+
+        Map<Integer, Integer> mapQuantidadeHabito;
+
+
+
+        List<HabitoDiarioResponse> resposta = new ArrayList<>();
 
         for (Habito habito : habitos) {
             HabitoDiario habitoDiario = mapHabito.get(habito.getId());
             if (habitoDiario == null) {
-                habitoDiario = new HabitoDiario();
-                habitoDiario.setId_h(habito.getId());
-                habitoDiario.setData(data);
-                habitoDiario.setStatus(0);
-                mapHabito.put(habito.getId(), habdiaRepo.save(habitoDiario));
+                habitoDiario = new HabitoDiario(habito.getId(), data);
+                habitoDiarioRepository.save(habitoDiario);
             }
+            resposta.add(new HabitoDiarioResponse(habitoDiario, habito));
         }
 
-        return new ArrayList<>(mapHabito.values());
+        return resposta;
     }
 }
 
