@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -45,7 +46,16 @@ public class ServiceHabito {
         Map<Integer, HabitoDiario> mapHabito = habitoDiarioRepository.findAllByData(data).stream()
                 .collect(Collectors.toMap(HabitoDiario::getId_h, Function.identity()));
 
-        Map<Integer, Integer> mapQuantidadeHabito;
+        Map<Integer, Integer> mapQuantidadeHabito = new HashMap<>();
+
+        for (HabitoDiario habitoDiario : habitoDiarioRepository.findAll()){
+            Integer quantidade = mapQuantidadeHabito.get(habitoDiario.getId_h());
+            if(quantidade==null){
+                quantidade = 0;
+            }
+            quantidade++;
+            mapQuantidadeHabito.put(habitoDiario.getId_h(), quantidade);
+        }
 
 
 
