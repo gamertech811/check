@@ -2,6 +2,7 @@ package com.tresedemais.habitosDiarios.controllers;
 
 import com.tresedemais.habitosDiarios.models.response.HabitoDiarioResponse;
 import com.tresedemais.habitosDiarios.models.db.Habito;
+import com.tresedemais.habitosDiarios.models.response.HabitoResponse;
 import com.tresedemais.habitosDiarios.services.ServiceHabito;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,8 +20,8 @@ public class HabitoController {
     private ServiceHabito habServ;
 
     @GetMapping
-    public ResponseEntity<List<Habito>> listarHabitos() {
-        return ResponseEntity.ok(habServ.getAllHabitos());
+    public ResponseEntity<List<HabitoResponse>> listarHabitos() {
+        return ResponseEntity.ok(habServ.getHabitos());
     }
 
     @GetMapping("/{id}")
