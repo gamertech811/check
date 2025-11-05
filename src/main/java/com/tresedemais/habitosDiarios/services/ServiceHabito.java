@@ -39,22 +39,15 @@ public class ServiceHabito {
     }
 
     public List<HabitoResponse> getHabitos(){
-        Map<Integer, Integer> mapQuantidadeHabito = habitoDiarioRepository.findAll().stream().map(
-                
-        )
-
-        for (HabitoDiario habitoDiario : habitoDiarioRepository.findAll()){
-            Integer quantidade = mapQuantidadeHabito.get(habitoDiario.getId_h());
-            if(quantidade==null){
-                quantidade = 0;
-            }
-            quantidade++;
-            mapQuantidadeHabito.put(habitoDiario.getId_h(), quantidade);
-        }
+        Map<Integer, Long> contagemPorHabito = habitoDiarioRepository.findAll().stream()
+                .collect(Collectors.groupingBy(
+                        HabitoDiario::getId_h,      // agrupa pelo id_h
+                        Collectors.counting()       // conta quantas vezes aparece
+                ));
 
     return habitoRepository.findAll().stream().map(
-            habito -> new HabitoResponse(habito, mapQuantidadeHabito.get(habito.getId()))
-    ).toList();
+            habito -> new HabitoResponse(habito, contagemPorHabito.get(habito.getId()).intValue()))
+    .toList();
 
     }
 

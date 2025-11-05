@@ -34,7 +34,7 @@ public class HabitoController {
     @PostMapping
     public ResponseEntity<String> criarHabito(@RequestBody Habito habito) {
         habServ.criarHabito(habito);
-        return ResponseEntity.ok("Hábito criado com sucesso!");
+        return ResponseEntity.ok("Hábito salvo com sucesso!");
     }
 
     @GetMapping("/data/{data}")
