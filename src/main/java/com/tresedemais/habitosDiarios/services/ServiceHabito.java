@@ -1,5 +1,6 @@
 package com.tresedemais.habitosDiarios.services;
 
+import com.tresedemais.habitosDiarios.models.request.IdRequest;
 import com.tresedemais.habitosDiarios.models.response.HabitoDiarioResponse;
 import com.tresedemais.habitosDiarios.models.db.Habito;
 import com.tresedemais.habitosDiarios.models.db.HabitoDiario;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -38,18 +36,59 @@ public class ServiceHabito {
         habitoRepository.deleteById(id);
     }
 
-    public List<HabitoResponse> getHabitos(){
+//    public List<HabitoResponse> getHabitos(){
+//        Map<Integer, Long> contagemPorHabito = habitoDiarioRepository.findAll().stream()
+//                .collect(Collectors.groupingBy(
+//                        HabitoDiario::getId_h,      // agrupa pelo id_h
+//                        Collectors.counting()       // conta quantas vezes aparece
+//                ));
+//
+//    return habitoRepository.findAll().stream().map(
+//            habito -> new HabitoResponse(habito, contagemPorHabito.get(habito.getId()).intValue()))
+//    .toList();
+//
+//    }
+
+    public List<HabitoResponse> getHabitos() {
         Map<Integer, Long> contagemPorHabito = habitoDiarioRepository.findAll().stream()
                 .collect(Collectors.groupingBy(
-                        HabitoDiario::getId_h,      // agrupa pelo id_h
-                        Collectors.counting()       // conta quantas vezes aparece
+                        HabitoDiario::getId_h,
+                        Collectors.counting()
                 ));
 
-    return habitoRepository.findAll().stream().map(
-            habito -> new HabitoResponse(habito, contagemPorHabito.get(habito.getId()).intValue()))
-    .toList();
+        return habitoRepository.findAll().stream()
+                .map(habito -> new HabitoResponse(
+                        habito,
+                        contagemPorHabito.getOrDefault(habito.getId(), 0L).intValue()
+                ))
+                .toList();
+    }
+
+    public Integer concluirHabitoDiario(IdRequest idRequest){
+       HabitoDiario habitoDiario =  habitoDiarioRepository.findById(idRequest.getId()).orElse(null);
+
+       if(habitoDiario == null){
+           //404
+           // nao encontrado
+           return 2;
+       }
+
+       if(habitoDiario.getData().isBefore(LocalDate.now())){
+           return 3; //"Não é possível concluir este hábito depois do dia agendado"
+       }
+
+       if (habitoDiario.getData().isAfter(LocalDate.now())){
+           return 4; //"Não é possível concluir este hábito antes do dia agendado"
+       }
+
+
+       habitoDiario.setStatus(1);
+       habitoDiarioRepository.save(habitoDiario);
+       return 1; // deu certo "
+
 
     }
+
 
     public Habito findHabitoById(int id) {
         return habitoRepository.findById(id).orElse(null);
