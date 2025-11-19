@@ -6,12 +6,12 @@ public class HabitoResponse {
 
     private Integer id;
     private String nome;
-    private Integer quantidade;
+    private Integer concluidos;
 
-    public HabitoResponse(Habito habito, Integer quantidade){
+    public HabitoResponse(Habito habito, Integer concluidos){
         this.id = habito.getId();
         this.nome = habito.getNome();
-        this.quantidade = quantidade == null ? 0 : quantidade;
+        this.concluidos = concluidos == null ? 0 : concluidos;
     }
 
 
@@ -32,11 +32,11 @@ public class HabitoResponse {
         this.nome = nome;
     }
 
-    public Integer getQuantidade() {
-        return quantidade;
+    public Integer getConcluidos() {
+        return concluidos;
     }
 
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
+    public void setConcluidos(Integer concluidos) {
+        this.concluidos = concluidos;
     }
 }

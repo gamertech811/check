@@ -51,6 +51,7 @@ public class ServiceHabito {
 
     public List<HabitoResponse> getHabitos() {
         Map<Integer, Long> contagemPorHabito = habitoDiarioRepository.findAll().stream()
+                .filter(hd -> hd.getStatus() == 1)
                 .collect(Collectors.groupingBy(
                         HabitoDiario::getId_h,
                         Collectors.counting()
